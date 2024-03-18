@@ -87,6 +87,10 @@
   flex: 1;
   overflow: auto;
   margin: $margin-double;
+
+  nav {
+    font-weight: 600;
+  }
 }
 
 .selected-route {
