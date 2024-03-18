@@ -22,21 +22,21 @@ export class ExperimentRunDetailComponent {
         }
       }),
     ).subscribe({
-        next: run => {
-          this.experimentRun = run;
-          
-          let logs = JSON.parse(this.experimentRun.logs)["job_logs"];
-          let key = Object.keys(logs)[0];
-          this.logs = logs[key]["logs"];
-      
-          if (run.state != 'CREATED' && run.state != 'IN_PROGRESS') {
-            this.subscription.unsubscribe();
-          }
-        },
-        error: err => {
-          this.snackBar.showError(`Couldn't load experiment run: ${err.message}`);
+      next: run => {
+        this.experimentRun = run;
+
+        let logs = JSON.parse(this.experimentRun.logs)["job_logs"];
+        let key = Object.keys(logs)[0];
+        this.logs = logs[key]["logs"];
+
+        if (run.state != 'CREATED' && run.state != 'IN_PROGRESS') {
+          this.subscription.unsubscribe();
         }
-      });
+      },
+      error: err => {
+        this.snackBar.showError(`Couldn't load experiment run: ${err.message}`);
+      }
+    });
   }
 
   logs: string = "";
@@ -48,29 +48,4 @@ export class ExperimentRunDetailComponent {
     private backend: BackendApiService,
     private snackBar: SnackBarService
   ) { }
-
-  wandbLink(logs: string | null): string {
-    if(!logs) return '';
-
-    // regex to match https://wandb.ai/WANDB_ENTITY/aiod-demo/runs/RUN_ID
-    const regex = /https:\/\/wandb.ai\/(.*)\/(.*)\/runs\/(.*)/g;
-    const match = regex.exec(logs);
-    if (match) {
-      return match[0];
-    }
-    else {
-      return '';
-    }
-  }
-
-  getRunNameFromWandBLink(link: string): string {
-    const regex = /https:\/\/wandb.ai\/(.*)\/(.*)\/runs\/(.*)/g;
-    const match = regex.exec(link);
-    if (match) {
-      return match[3];
-    }
-    else {
-      return '';
-    }
-  }
 }
