@@ -1,7 +1,5 @@
 import requests
 
-with open("./Dockerfile") as f:
-    dockerfile_content = f.read()
 with open("./requirements.txt") as f:
     requirements_content = f.read()
 with open("./script.py") as f:
@@ -23,8 +21,7 @@ template_to_create = {
         {"name": "WANDB_PROJECT", "description": "wandb project descr"},
         {"name": "WANDB_NAME", "description": "wandb name descr"},
     ],
-    "available_metrics": ["accuracy", "precision_macro", "recall_macro", "f1_macro"],
-    "dockerfile": dockerfile_content,
+    "base_image": "python:3.9",
     "script": script_content,
     "pip_requirements": requirements_content,
 }
